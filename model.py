@@ -1,6 +1,7 @@
 """Models and database functions for Ratings project."""
 
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 # This is the connection to the PostgreSQL database; we're getting this through
 # the Flask-SQLAlchemy helper library. On this, we can find the `session`
@@ -25,6 +26,27 @@ class User(db.Model):
 
 
 # Put your Movie and Rating model classes here.
+
+class Movie(db.Model):
+    """Movies information."""
+
+    __tablename__ = "movies"
+
+    movie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    title = db.Column(db.String(64), nullable=True)
+    released_at = db.Column(db.DateTime, nullable=True)
+    imdb_url = db.Column(db.String(64), nullable=True)
+    
+
+class Rating(db.Model):
+    """Ratings information. Movie ratings by users"""
+
+    __tablename__ = "ratings"
+
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    movie_id = db.Column(db.Integer, nullable=True)
+    user_id = db.Column(db.Integer, nullable=True)
+    score = db.Column(db.Integer, nullable=True)
 
 
 ##############################################################################
