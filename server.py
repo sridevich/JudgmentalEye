@@ -44,15 +44,46 @@ def user_list():
 def registeration_form():
     """User sign in form"""
 
+
     
     return render_template("registration_form.html")
 
 @app.route("/registration", methods=["POST"])
 def registeration_process():
-    ""Add user to database""
+    """Add user to database"""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+    age = request.form.get("age")
+    zipcode = request.form.get("zipcode")
    
+    new_user = User(email=email, password=password,
+                    age=age, zipcode=zipcode)
+
+    db.session.add(new_user)
+    db.session.commit()
+
+    flash("New user is added")
+
     return redirect("/")
 
+@app.route("/login", methods=["GET"])
+def login_form():
+    """User login in form"""
+
+
+    return render_template("login_form.html")
+
+@app.route("/login", methods=["GET"])
+def login_form():
+    """User login in form"""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+   
+
+    return redirect("/")
 
 
 
