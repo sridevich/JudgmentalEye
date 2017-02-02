@@ -52,10 +52,10 @@ def registeration_form():
 def registeration_process():
     """Add user to database"""
 
-    email = request.form.get("email")
-    password = request.form.get("password")
-    age = request.form.get("age")
-    zipcode = request.form.get("zipcode")
+    email = request.form["email"]
+    password = request.form["password"]
+    age = request.form["age"]
+    zipcode = request.form["zipcode"]
    
     new_user = User(email=email, password=password,
                     age=age, zipcode=zipcode)
@@ -74,16 +74,27 @@ def login_form():
 
     return render_template("login_form.html")
 
-@app.route("/login", methods=["GET"])
-def login_form():
+@app.route("/login", methods=["POST"])
+def login_form_process():
     """User login in form"""
 
-    email = request.form.get("email")
-    password = request.form.get("password")
+    email = request.form["email"]
+    print email
+    password = request.form["password"]
+    print password
 
-   
+    user = User.query.filter_by(email=email).first()
+    print user
 
-    return redirect("/")
+    if not user:
+        flash("User doesn't exist")
+        return redirect("/login")
+    
+    if user.password != password:
+        flash("Please enter correct password")
+        return redirect("/login")
+
+    return render_template("/user/user_id")
 
 
 
