@@ -79,12 +79,11 @@ def login_form_process():
     """User login in form"""
 
     email = request.form["email"]
-    print email
+    #print email
     password = request.form["password"]
-    print password
+    #print password
 
     user = User.query.filter_by(email=email).first()
-    print user
 
     if not user:
         flash("User doesn't exist")
@@ -94,9 +93,28 @@ def login_form_process():
         flash("Please enter correct password")
         return redirect("/login")
 
-    return render_template("/user/user_id")
+    session["user_id"]=user.user_id
+    flash("Logged in")
 
+    return redirect("/user/%s" % user.user_id)
 
+@app.route("/logout", methods=["GET"])
+def logout_form():
+    """User login in form"""
+
+    del session["user_id"]
+    
+    flash("You have logged out successfully")
+
+    return redirect("/")
+
+@app.route("/user/<user_id>", methods=["GET"])
+def user_info(user_id):
+    """User page"""
+
+    user = User.query.get(user_id)
+    print "Sri was here"
+    return render_template("user.html", user=user)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the

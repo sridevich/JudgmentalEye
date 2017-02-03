@@ -7,7 +7,17 @@
 <body>
   Ratings
   <hr>
-
+  
+    <ul>
+        <p>Hi</p>
+        {% with messages = get_flashed_messages() %}
+            {%if messages%}
+                {%for message in messages%}
+                    <li>{{message}}</li>
+                {%endfor%}
+            {%endif%}
+        {%endwith%}
+    </ul>
   {% block content %} put your content here {% endblock %}
 
 </body>
